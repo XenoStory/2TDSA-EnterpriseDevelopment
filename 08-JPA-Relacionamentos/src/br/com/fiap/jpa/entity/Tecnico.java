@@ -33,11 +33,10 @@ public class Tecnico
 	public Tecnico() {}
 	
 	
-	public Tecnico(String nome, boolean capacitacao, Time time) 
+	public Tecnico(String nome, boolean capacitacao) 
 	{
 		this.nome = nome;
 		this.capacitacao = capacitacao;
-		this.time = time;
 	}
 
 

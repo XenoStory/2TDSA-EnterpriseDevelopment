@@ -37,6 +37,14 @@ public class Jogador
 	@JoinColumn(name="cd_time")
 	private Time time;
 	
+	
+	public Jogador(String nome, float salario, Posicao posicao) 
+	{
+		this.nome = nome;
+		this.salario = salario;
+		this.posicao = posicao;
+	}
+
 	public int getCodigo() 
 	{
 		return codigo;

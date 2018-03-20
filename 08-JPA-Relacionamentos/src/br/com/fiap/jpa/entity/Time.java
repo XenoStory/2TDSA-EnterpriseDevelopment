@@ -1,5 +1,6 @@
-package br.com.fiap.jpa.entity;
+	package br.com.fiap.jpa.entity;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
@@ -10,6 +11,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.SequenceGenerator;
@@ -31,13 +34,25 @@ public class Time
 	@Column(name="nr_socios")
 	private long numeroSocios;
 	
-	@OneToOne(fetch=FetchType.LAZY, cascade= {CascadeType.MERGE})
+	@OneToOne(fetch=FetchType.LAZY, cascade= {CascadeType.PERSIST})
 	@JoinColumn(name="cd_tecnico")
 	private Tecnico tecnico;
 	
 	 // Um time vários jogadores
-	@OneToMany(mappedBy="time")
-	private List<Jogador> jogadores;
+	@OneToMany(mappedBy="time", cascade=CascadeType.PERSIST)
+	private List<Jogador> jogadores = new ArrayList<>();
+	
+	@ManyToMany(cascade=CascadeType.PERSIST)
+	@JoinTable(name="T_PATROCINIO_TIME",
+		joinColumns = @JoinColumn(name="cd_time"),
+		inverseJoinColumns = @JoinColumn(name="cd_patrocinio"))
+	private List<Patrocinio> patrocinios;
+	
+	public void adicionarJogador(Jogador jogador)
+	{
+		jogadores.add(jogador); // Adiciona jogador na lista de jogadores
+		jogador.setTime(this); // Quando for OneToMany
+	}
 	
 	
 	public Time() {}
@@ -89,5 +104,31 @@ public class Time
 	{
 		this.tecnico = tecnico;
 	}
+
+
+	public List<Jogador> getJogadores() 
+	{
+		return jogadores;
+	}
+
+
+	public void setJogadores(List<Jogador> jogadores) 
+	{
+		this.jogadores = jogadores;
+	}
+
+
+	public List<Patrocinio> getPatrocinios() 
+	{
+		return patrocinios;
+	}
+
+
+	public void setPatrocinios(List<Patrocinio> patrocinios) 
+	{
+		this.patrocinios = patrocinios;
+	}
+	
+	
 	
 }
